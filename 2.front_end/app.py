@@ -32,7 +32,6 @@ def allowed_file(filename):
 def home():
     return render_template('index.html',data = data)
 
-
 @app.route('/', methods=['POST','GET'])
 def upload_image():
     #5.1.GET USERNAME
@@ -58,19 +57,14 @@ def upload_image():
         data= qr_code.data.decode("utf-8")
         type = qr_code.type
         text = f"{type}-->, {data}"
-        print(text)
-        
-       
-        
+        #APPEND DATA IN JSON
         
         #return render_template('index.html', filename=filename)
-        return redirect(request.url)
+        return redirect(request.url, data = data)
 
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)
-
-        
 
 if __name__ == '__main__':
    app.run(debug = True)
