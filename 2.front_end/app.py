@@ -6,6 +6,9 @@ import os
 #import magic
 import urllib.request
 from flask import Flask
+import cv2
+from pyzbar import pyzbar
+from PIL import Image
 # from werkzeug import secure_filename
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads/'
@@ -34,7 +37,7 @@ def home():
 def upload_image():
     #5.1.GET USERNAME
     if request.method == "POST":
-        print("special")
+        print("in location")
 
     #5.2.IMPLEMENT ERROR HANDLING
     if 'file' not in request.files:
@@ -47,6 +50,18 @@ def upload_image():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
+        #READ QR CODE
+        image = Image.open('static/uploads/'+filename)
+        qr_code = pyzbar.decode(image)[0]
+        #convert into string
+        data= qr_code.data.decode("utf-8")
+        type = qr_code.type
+        text = f"{type}-->, {data}"
+        print(text)
+        
+       
+        
         
         #return render_template('index.html', filename=filename)
         return redirect(request.url)
