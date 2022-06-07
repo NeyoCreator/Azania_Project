@@ -1,0 +1,1 @@
+cd .. && source env/scripts/activate && cd "3.login_registration"
