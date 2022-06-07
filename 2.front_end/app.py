@@ -9,6 +9,8 @@ from flask import Flask
 import cv2
 from pyzbar import pyzbar
 from PIL import Image
+import ast
+
 # from werkzeug import secure_filename
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads/'
@@ -21,12 +23,11 @@ lst = []
 
 #GET DATA FROM JSON
 # def get_rankedcoins():
-file= open('backend_data/sample.json')
-data = json.load(file)
+with open('backend_data/sample.json') as f:
+   data = json.load(f)
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 @app.route("/")
 def home():
@@ -54,13 +55,23 @@ def upload_image():
         image = Image.open('static/uploads/'+filename)
         qr_code = pyzbar.decode(image)[0]
         #convert into string
-        data= qr_code.data.decode("utf-8")
-        type = qr_code.type
-        text = f"{type}-->, {data}"
+        new_data= qr_code.data.decode("utf-8")
         #APPEND DATA IN JSON
+        data.append(ast.literal_eval(new_data))
+
+        #WRITE TO JSON FILE
+        with open('backend_data/sample.json', 'w') as json_file:
+         json.dump(data, json_file, 
+                         indent=4,  
+                         separators=(',',': '))
         
-        #return render_template('index.html', filename=filename)
-        return redirect(request.url, data = data)
+        return render_template('index.html', filename=filename, data = data)
+
+     
+        
+
+     #    return render_template('index.html', filename=filename, data = data)
+        
 
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')

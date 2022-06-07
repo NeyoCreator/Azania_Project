@@ -22,5 +22,11 @@
         "name": "JayZ",
         "pick_location": "Johannesburg Cental",
         "destination": "Sandton City"
+    },
+    {
+        "icon_url": "https://i.pinimg.com/736x/f1/1b/74/f11b74b2c5d636fbe4e19289b652b77c.jpg",
+        "name": "Adrea",
+        "first_location": "JHB central",
+        "last_location": "Sandton"
     }
 ]
