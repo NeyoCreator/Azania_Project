@@ -43,6 +43,10 @@ class RegisterForm(FlaskForm):
     username = StringField('username',validators= [InputRequired(), Length(min=4, max=15 )])
     password = PasswordField('password', validators= [InputRequired(),Length(min=8, max=80)])
 
+class UserDetailForm(FlaskForm):
+    location = StringField('location',validators = [InputRequired(), Length(min=4, max=8 )])
+    destination = StringField('destination',validators = [InputRequired(), Length(min=4, max=8 )])
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -74,10 +78,11 @@ def signup():
     
     return render_template('signup.html',form=form)
 
-@app.route('/dashboard')
+@app.route('/dashboard',methods=['GET','POST'])
 @login_required
 def dashboard():
-    return render_template('dashboard.html',name = current_user.username)
+    form = UserDetailForm()
+    return render_template('dashboard.html',form =form)
     
 @app.route('/logout')
 @login_required
