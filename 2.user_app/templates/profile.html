@@ -20,13 +20,11 @@ Login
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Project name</a>
+        <a class="navbar-brand" href="#">Jabuu.</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="{{ url_for('login') }}">Login</a></li>
-          <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+          <li class="active"><a href="#">Profile</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
@@ -38,6 +36,8 @@ Login
         <h1>User name : {{data['username']}}</h1>
         <h1>Location : {{data['location']}}</h1>
         <h1>Destination : {{data['destination']}}</h1>
+        <center><img src={{user_image}} alt=""></center>
+        
         <button class="btn btn-lg btn-primary btn-block" type="submit">Close</button>
       </form>
 

@@ -17,6 +17,12 @@ file_path = os.path.abspath(os.getcwd())+"\database.db"
 app = Flask(__name__)
 app.config['SECRET_KEY']='RThsiissecrete!'
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///'+file_path
+
+
+picFolder = os.path.join('static','pics')
+app.config['UPLOAD_FOLDER']=picFolder
+
+
 Bootstrap(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager()
@@ -112,9 +118,13 @@ def profile():
             result_data = y
     #CREATE QR CODE
     img=qrcode.make(result_data)
-    img.save(f"database_qrcode/{current_user.id}{user_name}_code.png")
-        
-    return render_template('profile.html',data = data)
+    img.save(f"{user_name}_code.png")
+
+    #LOAD QR CODE
+    pic1 = os.path.join(app.config["UPLOAD_FOLDER"], 'cloe_code.png')
+    
+    print("zabalaza")
+    return render_template('profile.html',data = data,user_image=pic1)
     
 @app.route('/logout')
 @login_required
