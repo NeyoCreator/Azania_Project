@@ -31,11 +31,12 @@ Jabbu.
     </nav>
 
     <div class="container">
-      <form class="form-signin", method="POST" action="/login">
-        <h2 class="form-signin-heading"> Enter Details</h2>
+      <form class="form-signin", method="POST" action="/dashboard">
+        <h2 class="form-signin-heading">  Enter enter details, {{name}}</h2>
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.location) }}
         {{ wtf.form_field(form.destination) }}
+        <h1>{{ wtf.current}}</h1>
         
         <button class="btn btn-lg btn-primary btn-block" type="submit">Next</button>
       </form>

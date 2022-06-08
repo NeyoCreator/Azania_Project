@@ -1,1 +1,0 @@
-cd .. && cd .. && env/scripts/activate && cd "2.user_app" && cd "3.login_registration"

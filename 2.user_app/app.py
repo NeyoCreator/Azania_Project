@@ -10,6 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+import json
 
 file_path = os.path.abspath(os.getcwd())+"\database.db"
 app = Flask(__name__)
@@ -60,28 +61,38 @@ def login():
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
                 return redirect(url_for('dashboard'))
-
         return '<h1>Invalid username or password</h1>'
-
-
     return render_template('login.html',form=form)
 
 @app.route('/signup',methods=['GET','POST'])
 def signup():
     form = RegisterForm()
+    global username
     if form.validate_on_submit():
+        username = form.username.data
         hashed_password=generate_password_hash(form.password.data, method="sha256")
         new_user = User(username=form.username.data,email=form.email.data,password = hashed_password)
         db.session.add(new_user)
         db.session.commit()
         return '<h1>New User has been created</h1>'
-    
     return render_template('signup.html',form=form)
 
 @app.route('/dashboard',methods=['GET','POST'])
 @login_required
 def dashboard():
     form = UserDetailForm()
+
+    with open('user_details.json') as f:
+        initial_data = json.load(f)
+        
+
+    data_user = {"id":current_user.id,"username":current_user.username,"location":form.location.data, "destination":form.destination.data}
+    
+    initial_data.append(data_user)
+    with open('user_details.json', 'w') as fp:
+         json.dump(initial_data, fp)
+
+
     return render_template('dashboard.html',form =form)
     
 @app.route('/logout')
