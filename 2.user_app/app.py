@@ -11,6 +11,7 @@ import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import json
+import qrcode
 
 file_path = os.path.abspath(os.getcwd())+"\database.db"
 app = Flask(__name__)
@@ -107,6 +108,11 @@ def profile():
         #position,value
         if current_user.id==data[x]["id"]:
             data= data[x]
+            user_name = data["username"]
+            result_data = y
+    #CREATE QR CODE
+    img=qrcode.make(result_data)
+    img.save(f"database_qrcode/{current_user.id}{user_name}_code.png")
         
     return render_template('profile.html',data = data)
     
