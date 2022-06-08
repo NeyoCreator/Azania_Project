@@ -88,9 +88,13 @@ def dashboard():
 
     data_user = {"id":current_user.id,"username":current_user.username,"location":form.location.data, "destination":form.destination.data}
     
-    initial_data.append(data_user)
-    with open('user_details.json', 'w') as fp:
-         json.dump(initial_data, fp)
+    #check for null values 
+    if data_user["location"] is None :
+        print("do no insert null values") 
+    else :
+        initial_data.append(data_user)
+        with open('user_details.json', 'w') as fp:
+            json.dump(initial_data, fp)
 
 
     return render_template('dashboard.html',form =form)
