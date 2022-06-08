@@ -81,11 +81,8 @@ def signup():
 @login_required
 def dashboard():
     form = UserDetailForm()
-
     with open('user_details.json') as f:
         initial_data = json.load(f)
-        
-
     data_user = {"id":current_user.id,"username":current_user.username,"location":form.location.data, "destination":form.destination.data}
     
     #check for null values 
@@ -95,9 +92,23 @@ def dashboard():
         initial_data.append(data_user)
         with open('user_details.json', 'w') as fp:
             json.dump(initial_data, fp)
-
+        return redirect(url_for('profile'))
 
     return render_template('dashboard.html',form =form)
+
+@app.route('/profile',methods=['GET','POST'])
+@login_required
+def profile():
+    #OPEN JSON FILE 
+    with open('user_details.json') as f:
+        data = json.load(f)
+    
+    for x,y in enumerate(data):
+        #position,value
+        if current_user.id==data[x]["id"]:
+            data= data[x]
+        
+    return render_template('profile.html',data = data)
     
 @app.route('/logout')
 @login_required
