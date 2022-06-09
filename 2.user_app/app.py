@@ -92,15 +92,32 @@ def create_profile():
         initial_data = json.load(f)
     data_user = {"id":current_user.id,"username":current_user.username,"location":form.location.data, "destination":form.destination.data}
     
-    #check for null values 
-    if data_user["location"] is None :
-        print("do no insert null values") 
-    else :
-        initial_data.append(data_user)
-        with open('user_details.json', 'w') as fp:
-            json.dump(initial_data, fp)
+
+    for x,y in enumerate(initial_data):
+        #position,value
+        if current_user.id==initial_data[x]["id"]:
+            initial_data= initial_data[x]
+            user_name = initial_data["username"]
+            user_id=initial_data["id"]
+            result_data = y
+
+    print(f"user_names: {user_name}, {current_user.username}")
+    print(f"user_names: {user_id}, {current_user.id}")
+
+    if user_id==current_user.id and user_name==current_user.username:
+        print("we can continue to profile")
         return redirect(url_for('profile'))
 
+    else :
+        print("we can contiue to create profile")
+         #check for null values 
+        if data_user["location"] is None :
+            print("do no insert null values") 
+        else :
+            initial_data.append(data_user)
+            with open('user_details.json', 'w') as fp:
+                json.dump(initial_data, fp)
+            return redirect(url_for('profile'))
     return render_template('create_profile.html',form =form)
 
 @app.route('/profile',methods=['GET','POST'])

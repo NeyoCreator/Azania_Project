@@ -32,13 +32,11 @@ Login
 
     <div class="container">
       <form class="form-signin", method="POST" action="/profile">
-        <h2 class="form-signin-heading">Profile user</h2>
-        <h1>User name : {{data['username']}}</h1>
-        <h1>Location : {{data['location']}}</h1>
-        <h1>Destination : {{data['destination']}}</h1>
-        <center><img src={{user_image}} alt=""></center>
-        
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Close</button>
+        <h2 class="form-signin-heading"><strong>User Name </strong>{{data['username']}}</h2>
+        <h2 class="form-signin-heading"><strong>Location </strong>{{data['location']}}</h2>
+        <h2 class="form-signin-heading"><strong>Destination </strong>{{data['destination']}}</h2>
+        <center><img src={{user_image}} alt="" width="200" height="200"></center>
+
       </form>
 
     </div> <!-- /container -->
