@@ -67,7 +67,7 @@ def login():
         if user :
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('create_profile'))
         return '<h1>Invalid username or password</h1>'
     return render_template('login.html',form=form)
 
@@ -81,12 +81,12 @@ def signup():
         new_user = User(username=form.username.data,email=form.email.data,password = hashed_password)
         db.session.add(new_user)
         db.session.commit()
-        return '<h1>New User has been created</h1>'
+        return redirect(url_for('login'))
     return render_template('signup.html',form=form)
 
-@app.route('/dashboard',methods=['GET','POST'])
+@app.route('/create_profile',methods=['GET','POST'])
 @login_required
-def dashboard():
+def create_profile():
     form = UserDetailForm()
     with open('user_details.json') as f:
         initial_data = json.load(f)
@@ -101,7 +101,7 @@ def dashboard():
             json.dump(initial_data, fp)
         return redirect(url_for('profile'))
 
-    return render_template('dashboard.html',form =form)
+    return render_template('create_profile.html',form =form)
 
 @app.route('/profile',methods=['GET','POST'])
 @login_required
@@ -118,10 +118,10 @@ def profile():
             result_data = y
     #CREATE QR CODE
     img=qrcode.make(result_data)
-    img.save(f"{user_name}_code.png")
+    img.save(f"static/pics/{user_name}_code.png")
 
     #LOAD QR CODE
-    pic1 = os.path.join(app.config["UPLOAD_FOLDER"], 'cloe_code.png')
+    pic1 = os.path.join(app.config["UPLOAD_FOLDER"], f'{user_name}_code.png')
     
     print("zabalaza")
     return render_template('profile.html',data = data,user_image=pic1)

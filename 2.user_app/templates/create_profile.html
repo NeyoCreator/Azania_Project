@@ -24,15 +24,15 @@ Jabbu.
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            <li><a href="#">Profile</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-      <form class="form-signin", method="POST" action="/dashboard">
-        <h2 class="form-signin-heading">  Enter enter details, {{name}}</h2>
+      <form class="form-signin", method="POST" action="/create_profile">
+        <h2 class="form-signin-heading"> Create profile</h2>
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.location) }}
         {{ wtf.form_field(form.destination) }}
