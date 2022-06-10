@@ -20,24 +20,32 @@ Sign Up
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Register.</a>
+      <a class="navbar-brand" href="#">Jabuu.</a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="{{url_for('login')}}">Login</a></li>
+        <li class="active"><a href="#">Sign-up</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>
 </nav>
-    <div class="container">
-      <form class="form-signin", method="POST" action="/signup">
-        {{ form.hidden_tag() }}
-        <h3>{{ wtf.form_field(form.username) }}</h3>
-        <h3>{{ wtf.form_field(form.email) }}</h3>
-        <h3>{{ wtf.form_field(form.password) }}</h3>
-        
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-      </form>
+</div><!-- /.container -->
 
-    </div> <!-- /container -->
+<div class="container">
+  <form class="form-signin", method="POST" action="/create_profile">
+    <h2 class="form-signin-heading"><strong>Create Profile</strong></h2>
+    {{ form.hidden_tag() }}
+    {{ wtf.form_field(form.location) }}
+    {{ wtf.form_field(form.destination) }}
+    
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Continue</button>
+  </form>
+
+</div> <!-- /container -->
 {% endblock %}
+
+
+
+
+
+
