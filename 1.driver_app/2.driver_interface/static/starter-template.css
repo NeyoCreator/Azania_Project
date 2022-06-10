@@ -1,7 +1,43 @@
+.orangedot {
+  height: 20px;
+  width: 20px;
+  background-color: #EDAD00;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.space_three {
+  margin-bottom: 10mm;
+}
+
+.graydot {
+  height: 20px;
+  width: 20px;
+  background-color: #AFB0B1;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 body {
   padding-top: 50px;
+  font-family: 'Antic';font-size: 22px;
+  background-color: #E1E1E1;
 }
 .starter-template {
-  padding: 40px 15px;
+  padding: 20px 30px;
+  text-align: left;
+}
+
+
+.button {
+  background-color: #E4D2A2;
+  border: none;
+  color: #EDAD00;
+  padding: 10px 20px;
   text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
 }
