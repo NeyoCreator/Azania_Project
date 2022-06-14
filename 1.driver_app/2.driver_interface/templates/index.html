@@ -11,47 +11,14 @@ Demo App
 {% endblock %}
 
 {% block content %}
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Driver.</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-
     <p class="space_three"></p>
-
-    <center>
-    <span class="orangedot"></span>
-    <span class="graydot"></span>
-    <span class="graydot"></span>
-    </center>
-
       <div class="starter-template">
-        <h1><strong>About.</strong></h1>
-        <p class="lead"><strong>The main application of this app would be to keep track of the users in Jabuu.</strong></p>
+        <h1><strong>Azania</strong></h1>
+        <p class="lead"><strong>Our is to provide faster and more effeccient ways of moving money</strong></p>
         <p class="lead"><strong></strong></p>
         <form action="{{ url_for('signup') }}">
-        <button class="button">Sign-up</button>
+        <button class="button"><strong>Register</strong></button>
         </form>
-      </div>
-
-     
-   
-
-      
-
+      </div>    
     </div><!-- /.container -->
 {% endblock %}

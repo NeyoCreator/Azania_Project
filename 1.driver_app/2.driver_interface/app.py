@@ -18,7 +18,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY']='RThsiissecrete!'
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///'+file_path
 
-
 picFolder = os.path.join('static','pics')
 app.config['UPLOAD_FOLDER']=picFolder
 
