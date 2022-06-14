@@ -89,34 +89,59 @@ def create_profile():
     form = UserDetailForm()
     with open('user_details.json') as f:
         initial_data = json.load(f)
-    data_user = {"id":current_user.id,"username":current_user.username,"location":form.location.data, "destination":form.destination.data}
-    
+    data_user = {"id":current_user.id,"username":current_user.username,"balance":100}
+    isThere=False
 
+    #WRITE USER DATA TO THE JSON FILE 
     for x,y in enumerate(initial_data):
         #position,value
         if current_user.id==initial_data[x]["id"]:
+            isThere=True
             initial_data= initial_data[x]
             user_name = initial_data["username"]
             user_id=initial_data["id"]
             result_data = y
 
-    print(f"user_names: {user_name}, {current_user.username}")
-    print(f"user_names: {user_id}, {current_user.id}")
+    if isThere :
+        print("You already exist we need to take you to profile")
+        
+    else:
+        print("We will create your profile")
+        initial_data.append(data_user)
+        with open('user_details.json', 'w') as fp:
+            json.dump(initial_data, fp)
+            #return redirect(url_for('profile'))
+    return redirect(url_for('profile'))
 
-    if user_id==current_user.id and user_name==current_user.username:
-        print("we can continue to profile")
-        return redirect(url_for('profile'))
+    #print(isThere)
 
-    else :
-        print("we can contiue to create profile")
-         #check for null values 
-        if data_user["location"] is None :
-            print("do no insert null values") 
-        else :
-            initial_data.append(data_user)
-            with open('user_details.json', 'w') as fp:
-                json.dump(initial_data, fp)
-            return redirect(url_for('profile'))
+        # else :
+        #     user_name = "I WILL LOAD TO DATA BASE"
+        #     initial_data.append(data_user)
+        #     with open('user_details.json', 'w') as fp:
+        #         json.dump(initial_data, fp)
+        #     return redirect(url_for('profile'))
+
+
+    # print(data_user)
+
+    # print(f"user_names: {user_name}, {current_user.username}")
+    # print(f"user_names: {user_id}, {current_user.id}")
+
+    # if user_id==current_user.id and user_name==current_user.username:
+    #     print("we can continue to profile")
+    #     return redirect(url_for('profile'))
+
+    # else :
+    #     print("we can contiue to create profile")
+    #      #check for null values 
+    #     if data_user["balance"] is None :
+    #         print("do no insert null values") 
+    #     else :
+    #         initial_data.append(data_user)
+    #         with open('user_details.json', 'w') as fp:
+    #             json.dump(initial_data, fp)
+    #         return redirect(url_for('profile'))
     return render_template('create_profile.html',form =form)
 
 @app.route('/profile',methods=['GET','POST'])
