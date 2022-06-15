@@ -8,6 +8,18 @@ body {
   
 }
 
+.picture-card {
+  width: 350px;
+  box-shadow: 0 4px 8px 0 grey;
+  text-align: left;
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 0.5cm;
+  background-color: white;
+  color: #AFB0B1;
+}
+
 .orangedot {
   height: 15px;
   width: 15px;

@@ -2,7 +2,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}
-Login
+Azania
 {% endblock %}
 
 {% block styles %}
@@ -31,11 +31,18 @@ Login
     </div>
   </nav>
   <p class="space_three"></p>
-
     <div class="container">
       <form class="form-signin", method="POST" action="/profile">
-        <h3 class="form-signin-heading"><strong>User Name </strong>{{data['username']}}</h3>
-        <h3 class="form-signin-heading"><strong>Balance</strong>{{data['balance']}}</h3>
+        <h1 ><strong>{{data['username']}}</strong></h1>
+        <p class="space_three"></p>
+        
+        <div class="picture-card">
+        <h3 class="form-signin-heading"><strong>Wallet</strong></h3>
+        <h3 class="form-signin-heading"><strong>Balance : </strong>{{data['balance']}} ZA</h3> 
+        <h3 class="form-signin-heading"><strong>Currency : </strong>R {{currency}}</h3> 
+        
+      </div>
+        
       </form>
 
 

@@ -5,3 +5,7 @@ python -m flask run
 ======================================================
 applying enviroment
 cd .. && cd .. && source env/Scripts/activate && cd "1.main_interface" && cd "2.application"
+
+ export FLASK_APP=main.py
+$ export FLASK_ENV=development
+$ flask run
