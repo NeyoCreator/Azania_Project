@@ -105,6 +105,7 @@ def profile():
         print("You already exist.")
         print(initial_data)
         data=initial_data
+         #CLACULATE THE CURRENCY
         currency = data["balance"]*16   
     else:
         print("We will create your profile")
@@ -116,6 +117,15 @@ def profile():
         #CLACULATE THE CURRENCY
         currency = data["balance"]*16
 
+        #EDIT MASTER DATA
+        with open('databases/bank.json') as f:
+            current_balance_list = json.load(f)
+        
+        current_balance=current_balance_list[-1]["amount"]
+        latest_amount= {"id":current_user.id, "amount":current_balance-100}
+        current_balance_list.append(latest_amount)
+        with open('databases/bank.json', 'w') as fp:
+            json.dump(current_balance_list, fp)
     return render_template('profile.html',data=data,currency=currency)
 
 #4.4.LOG-OUT
