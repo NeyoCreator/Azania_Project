@@ -58,18 +58,7 @@ class UserDetailForm(FlaskForm):
 def index():
     return render_template('index.html')
 
-@app.route('/login',methods=['GET','POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username = form.username.data).first()  
-        if user :
-            if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
-                return redirect(url_for('create_profile'))
-        return '<h1>Invalid username or password</h1>'
-    return render_template('login.html',form=form)
-
+#4.1USER SIGNS-UP
 @app.route('/signup',methods=['GET','POST'])
 def signup():
     form = RegisterForm()
@@ -82,6 +71,73 @@ def signup():
         db.session.commit()
         return redirect(url_for('login'))
     return render_template('signup.html',form=form)
+
+#4.2.LOGIN APPLICATION
+@app.route('/login',methods=['GET','POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username = form.username.data).first()  
+        if user :
+            if check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                return redirect(url_for('profile'))
+        return '<h1>Invalid username or password</h1>'
+    return render_template('login.html',form=form)
+
+#4.3.VIEW PROFILE
+@app.route('/profile',methods=['GET','POST'])
+@login_required
+def profile():
+    #WRITE TO THE JSON FILE
+    with open('databases/user_details.json') as f:
+        initial_data = json.load(f)
+    data_user = {"id":current_user.id,"username":current_user.username,"balance":100}
+    isThere=False
+
+    #CHECK IF USER EXIST IN FILE
+    for x,y in enumerate(initial_data):
+        #position,value
+        if current_user.id==initial_data[x]["id"]:
+            isThere=True
+            initial_data= initial_data[x]
+            user_name = initial_data["username"]
+            user_id=initial_data["id"]
+            result_data = y
+
+    if isThere :
+        print("You already exist.")
+        print(initial_data)
+        data=initial_data
+        
+        
+    else:
+        print("We will create your profile")
+        print(data_user)
+        data=data_user
+        initial_data.append(data_user)
+        with open('databases/user_details.json', 'w') as fp:
+            json.dump(initial_data, fp)
+
+    #OPEN JSON FILE 
+    # with open('user_details.json') as f:
+    #     data = json.load(f)
+    
+    # for x,y in enumerate(data):
+    #     #position,value
+    #     if current_user.id==data[x]["id"]:
+    #         data= data[x]
+    #         user_name = data["username"]
+    #         result_data = y
+    #CREATE QR CODE
+    #img=qrcode.make(result_data)
+    #img.save(f"static/pics/{user_name}_code.png")
+
+    #LOAD QR CODE
+    #pic1 = os.path.join(app.config["UPLOAD_FOLDER"], f'{user_name}_code.png')
+    
+    print("zabalaza")
+    return render_template('profile.html',data=data)
 
 @app.route('/create_profile',methods=['GET','POST'])
 @login_required
@@ -103,7 +159,7 @@ def create_profile():
             result_data = y
 
     if isThere :
-        print("You already exist we need to take you to profile")
+        print("You already exist.")
         
     else:
         print("We will create your profile")
@@ -144,29 +200,7 @@ def create_profile():
     #         return redirect(url_for('profile'))
     return render_template('create_profile.html',form =form)
 
-@app.route('/profile',methods=['GET','POST'])
-@login_required
-def profile():
-    #OPEN JSON FILE 
-    with open('user_details.json') as f:
-        data = json.load(f)
-    
-    for x,y in enumerate(data):
-        #position,value
-        if current_user.id==data[x]["id"]:
-            data= data[x]
-            user_name = data["username"]
-            result_data = y
-    #CREATE QR CODE
-    #img=qrcode.make(result_data)
-    #img.save(f"static/pics/{user_name}_code.png")
-    print(data)
 
-    #LOAD QR CODE
-    pic1 = os.path.join(app.config["UPLOAD_FOLDER"], f'{user_name}_code.png')
-    
-    print("zabalaza")
-    return render_template('profile.html',data = data,user_image=pic1)
     
 @app.route('/logout')
 @login_required
