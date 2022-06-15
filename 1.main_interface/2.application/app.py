@@ -1,4 +1,4 @@
-
+#0.IMPORT LIBRARIES
 from email import message
 from flask import Flask, render_template,redirect,url_for 
 from flask_bootstrap import Bootstrap
@@ -13,23 +13,22 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 import json
 import qrcode
 
-file_path = os.path.abspath(os.getcwd())+"\database.db"
+#1.DATABASE AND FOLDER CREATION
+file_path = os.path.abspath(os.getcwd())+"\databases\database.db"
 app = Flask(__name__)
 app.config['SECRET_KEY']='RThsiissecrete!'
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///'+file_path
-
 picFolder = os.path.join('static','pics')
 app.config['UPLOAD_FOLDER']=picFolder
 
-
+#2.LOGIN MANAGEMENT
 Bootstrap(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-
-
+#3.CLASS CREATION
 class User(UserMixin,db.Model):
     id = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(15),unique=True)
@@ -54,6 +53,7 @@ class UserDetailForm(FlaskForm):
     location = StringField('location',validators = [InputRequired(), Length(min=4, max=8 )])
     destination = StringField('destination',validators = [InputRequired(), Length(min=4, max=8 )])
 
+#4.ROUTING
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -87,7 +87,7 @@ def signup():
 @login_required
 def create_profile():
     form = UserDetailForm()
-    with open('user_details.json') as f:
+    with open('databases/user_details.json') as f:
         initial_data = json.load(f)
     data_user = {"id":current_user.id,"username":current_user.username,"balance":100}
     isThere=False
@@ -108,7 +108,7 @@ def create_profile():
     else:
         print("We will create your profile")
         initial_data.append(data_user)
-        with open('user_details.json', 'w') as fp:
+        with open('databases/user_details.json', 'w') as fp:
             json.dump(initial_data, fp)
             #return redirect(url_for('profile'))
     return redirect(url_for('profile'))
@@ -158,8 +158,9 @@ def profile():
             user_name = data["username"]
             result_data = y
     #CREATE QR CODE
-    img=qrcode.make(result_data)
-    img.save(f"static/pics/{user_name}_code.png")
+    #img=qrcode.make(result_data)
+    #img.save(f"static/pics/{user_name}_code.png")
+    print(data)
 
     #LOAD QR CODE
     pic1 = os.path.join(app.config["UPLOAD_FOLDER"], f'{user_name}_code.png')

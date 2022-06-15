@@ -32,9 +32,9 @@ Login
 
     <div class="container">
       <form class="form-signin", method="POST" action="/profile">
+        <h3 class="form-signin-heading"><strong>ID </strong>{{data['id']}}</h3>
         <h3 class="form-signin-heading"><strong>User Name </strong>{{data['username']}}</h3>
-        <h3 class="form-signin-heading"><strong>Location </strong>{{data['location']}}</h3>
-        <h3 class="form-signin-heading"><strong>Destination </strong>{{data['destination']}}</h3>
+        <h3 class="form-signin-heading"><strong>Balance</strong>{{data['balance']}}</h3>
         <center><img src={{user_image}} alt="" width="350" height="350"></center>
       </form>
 
