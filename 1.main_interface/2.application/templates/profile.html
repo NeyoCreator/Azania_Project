@@ -32,7 +32,7 @@ Azania
   </nav>
   <p class="space_three"></p>
     <div class="container">
-      <form class="form-signin", method="POST" action="/profile">
+      <form class="form-signin", method="POST" action="">
         <h1 ><strong>{{data['username']}}</strong></h1>
         <p class="space_three"></p>
         
@@ -41,11 +41,23 @@ Azania
         <h3 class="form-signin-heading"><strong>Balance : </strong>{{data['balance']}} ZA</h3> 
         <h3 class="form-signin-heading"><strong>Currency : </strong>R {{currency}}</h3> 
       </div>
-        
-      <p class="space_three"></p>
-      <button class="wide_blue_button"><strong>Recieve Tokens</strong> </button>
-      <button class="wide_orange_button"><strong>Send Tokens</strong> </button>
-      
       </form>
+      <p class="space_three"></p>
+      <center><form action="{{ url_for('receive') }}">
+        <button class="wide_blue_button"><strong>Receive Tokens</strong></button>
+      </form></center>
+      <center><form action="{{ url_for('receive') }}">
+        <button class="wide_orange_button"><strong>Send Tokens</strong></button>
+      </form></center>
+
+
+    
+   
+        
+      
+      
     </div> <!-- /container -->
+
+    
+      
 {% endblock %}

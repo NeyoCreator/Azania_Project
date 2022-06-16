@@ -41,3 +41,30 @@ body {
   cursor: pointer;
   border-radius: 16px;
 }
+
+.wide_orange_button{
+  background-color: #E4D2A2;
+  border: none; 
+  color: #EDAD00;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
+  width: 350px;
+}
+.wide_blue_button{
+  background-color: #8DADE8;
+  border: none; 
+  color: #266EF1;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
+  width: 350px;
+}

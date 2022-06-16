@@ -17,12 +17,13 @@ Demo App
         <p class="lead"><strong>Our goal is to provide faster and more effeccient ways of moving money</strong></p>
         <p class="lead"><strong></strong></p>
         <form action="{{ url_for('signup') }}">
-        <button class="button"><strong>Register</strong></button>
+        <center><button class="wide_orange_button"><strong>Register</strong></button></center>
         </form>
 
-        <form action="{{ url_for('login') }}">
-          <button class="button"><strong>Login</strong></button>
+        <center><form action="{{ url_for('login') }}">
+          <button class="wide_blue_button"><strong>Login</strong></button>
           </form>
-      </div>    
+      </div></center>
+            
     </div><!-- /.container -->
 {% endblock %}

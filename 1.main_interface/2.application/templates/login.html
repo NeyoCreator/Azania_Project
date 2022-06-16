@@ -14,11 +14,18 @@ Login
 {% block content %}
     <div class="container">
       <form class="form-signin", method="POST" action="/login">
+        {% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+         {{ message }}
+      {% endfor %}
+   {% endif %}
+{% endwith %}
         {{ form.hidden_tag() }}
         <h3>{{ wtf.form_field(form.username) }}</h3>
         <h3>{{ wtf.form_field(form.password) }} </h3>
         {{ wtf.form_field(form.remember) }}
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+        <button class="wide_blue_button" type="submit">Log in</button>
       </form>
 
     </div> <!-- /container -->

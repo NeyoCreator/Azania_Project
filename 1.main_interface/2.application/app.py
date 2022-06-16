@@ -1,6 +1,7 @@
 #0.IMPORT LIBRARIES
 from email import message
-from flask import Flask, render_template,redirect,url_for 
+from locale import currency
+from flask import Flask, render_template,redirect,url_for,flash
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField,BooleanField
@@ -53,49 +54,17 @@ class UserDetailForm(FlaskForm):
     location = StringField('location',validators = [InputRequired(), Length(min=4, max=8 )])
     destination = StringField('destination',validators = [InputRequired(), Length(min=4, max=8 )])
 
-#4.ROUTING
-@app.route('/')
-def index():
-    return render_template('index.html')
+#4.CUSTOM FUNCTIONS
 
-#4.1USER SIGNS-UP
-@app.route('/signup',methods=['GET','POST'])
-def signup():
-    form = RegisterForm()
-    global username
-    if form.validate_on_submit():
-        username = form.username.data
-        hashed_password=generate_password_hash(form.password.data, method="sha256")
-        new_user = User(username=form.username.data,email=form.email.data,password = hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('login'))
-    return render_template('signup.html',form=form)
-
-#4.2.LOGIN APPLICATION
-@app.route('/login',methods=['GET','POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username = form.username.data).first()  
-        if user :
-            if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
-                return redirect(url_for('profile'))
-        return '<h1>Invalid username or password</h1>'
-    return render_template('login.html',form=form)
-
-#4.3.VIEW PROFILE
-@app.route('/profile',methods=['GET','POST'])
-@login_required
-def profile():
-    #4.3.1WRITE TO THE JSON FILE
+#4.1 FIND CURRENT USER
+def find_current_user():
+    #4.1.1WRITE TO THE JSON FILE
     with open('databases/user_details.json') as f:
         initial_data = json.load(f)
     data_user = {"id":current_user.id,"username":current_user.username,"balance":100}
     isThere=False
 
-    #4.3.2.CHECK IF USER EXIST IN FILE
+    #4.1.2.CHECK IF USER EXIST IN FILE
     for x,y in enumerate(initial_data):
         if current_user.id==initial_data[x]["id"]:
             isThere=True
@@ -120,13 +89,68 @@ def profile():
         #EDIT MASTER DATA
         with open('databases/bank.json') as f:
             current_balance_list = json.load(f)
-        
+
         current_balance=current_balance_list[-1]["amount"]
         latest_amount= {"id":current_user.id, "amount":current_balance-100}
         current_balance_list.append(latest_amount)
         with open('databases/bank.json', 'w') as fp:
             json.dump(current_balance_list, fp)
+    
+    return data, currency
+
+
+
+#5.ROUTING
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+#5.1USER SIGNS-UP
+@app.route('/signup',methods=['GET','POST'])
+def signup():
+    form = RegisterForm()
+    global username
+    if form.validate_on_submit():
+        username = form.username.data
+        hashed_password=generate_password_hash(form.password.data, method="sha256")
+        new_user = User(username=form.username.data,email=form.email.data,password = hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template('signup.html',form=form)
+
+#5.2.LOGIN APPLICATION
+@app.route('/login',methods=['GET','POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username = form.username.data).first()  
+        if user :
+            if check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                return redirect(url_for('profile'))
+        else :
+            flash('Invalid username or password') 
+    return render_template('login.html',form=form)
+
+#5.3.VIEW PROFILE
+@app.route('/profile',methods=['GET','POST'])
+@login_required
+def profile():
+
+    #5.3.1.IMPLEMENT CUSTOM FUNCTION
+    data, _ = find_current_user()
+
+    #5.3.2.CREATE QR CODE FROM DATA
+
     return render_template('profile.html',data=data,currency=currency)
+
+#5.4.RECEIVE TOKENS
+@app.route('/receive')
+def receive():
+    data, currency = find_current_user()
+    print(data)
+    return render_template('receive.html',data=data)
 
 #4.4.LOG-OUT
 @app.route('/logout')
