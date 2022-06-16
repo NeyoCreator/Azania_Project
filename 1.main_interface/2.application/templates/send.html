@@ -2,7 +2,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}
-Azania
+Login
 {% endblock %}
 
 {% block styles %}
@@ -14,12 +14,10 @@ Azania
 {% block content %}
     <div class="container">
       <form class="form-signin", method="POST" action="profile">
-        <h3 class="form-signin-heading"><strong>Present QR Code to the sender</strong></h3>
-        <p class="space_three"></p>
-        <center><img class = "image"src={{picture}} alt=""></center>
-        <p class="space_three"></p>
-        <button class="wide_blue_button" type="submit"><strong>close</strong></button>
-
+     
+        {{ form.hidden_tag() }}
+        <h3>{{ wtf.form_field(form.amount) }}</h3>
+    
       </form>
 
     </div> <!-- /container -->

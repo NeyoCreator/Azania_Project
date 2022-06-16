@@ -1,10 +1,11 @@
 #0.IMPORT LIBRARIES
 from email import message
 from locale import currency
+from django.forms import IntegerField
 from flask import Flask, render_template,redirect,url_for,flash
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField,BooleanField
+from wtforms import StringField, PasswordField,BooleanField,IntegerField
 from wtforms.validators import InputRequired, Email, Length
 import email_validator
 from flask_sqlalchemy import SQLAlchemy
@@ -54,6 +55,10 @@ class UserDetailForm(FlaskForm):
     location = StringField('location',validators = [InputRequired(), Length(min=4, max=8 )])
     destination = StringField('destination',validators = [InputRequired(), Length(min=4, max=8 )])
 
+class TokeAmount(FlaskForm):
+    amount = IntegerField('amount')
+
+
 #4.CUSTOM FUNCTIONS
 
 #4.1 FIND CURRENT USER
@@ -98,8 +103,6 @@ def find_current_user():
     
     return data, currency
 
-
-
 #5.ROUTING
 @app.route('/')
 def index():
@@ -137,22 +140,42 @@ def login():
 @app.route('/profile',methods=['GET','POST'])
 @login_required
 def profile():
-
     #5.3.1.IMPLEMENT CUSTOM FUNCTION
-    data, _ = find_current_user()
-
-    #5.3.2.CREATE QR CODE FROM DATA
-
+    data, currency = find_current_user()
     return render_template('profile.html',data=data,currency=currency)
 
-#5.4.RECEIVE TOKENS
+#5.4.SEND TOKENS
 @app.route('/receive')
 def receive():
+    #5.4.1.IMPLEMENT CUSTOM FUNCTION
     data, currency = find_current_user()
-    print(data)
-    return render_template('receive.html',data=data)
 
-#4.4.LOG-OUT
+    #5.4.2.CREATE QR CODE FROM DATA
+    username = data["username"]
+    img=qrcode.make(data)
+    img.save(f"static/pics/{username}_code.png")
+    
+    #5.3.3.LOAD QR CODE
+    picture = os.path.join(app.config["UPLOAD_FOLDER"], f'{username}_code.png')
+
+    return render_template('receive.html',data=data, picture=picture)
+
+#5.5.RECEIVE TOKENS
+@app.route('/send',methods=['GET','POST'])
+def send():
+    #5.5.1.IMPLEMENT CUSTOM FUNCTION
+    data, currency = find_current_user()
+
+    #5.5.2.IMPLEMENT CLASS
+    form = TokeAmount()
+    if form.validate_on_submit():
+        print("we have you")
+
+        redirect(url_for('login'))
+    
+    return render_template('send.html',data=data, form=form)
+
+#LAST PART
 @app.route('/logout')
 @login_required
 def logout():
