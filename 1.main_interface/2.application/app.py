@@ -56,8 +56,7 @@ class UserDetailForm(FlaskForm):
     destination = StringField('destination',validators = [InputRequired(), Length(min=4, max=8 )])
 
 class TokeAmount(FlaskForm):
-    amount = IntegerField('amount')
-
+    amount = IntegerField('ZA')
 
 #4.CUSTOM FUNCTIONS
 
@@ -165,14 +164,26 @@ def receive():
 def send():
     #5.5.1.IMPLEMENT CUSTOM FUNCTION
     data, currency = find_current_user()
+     
 
     #5.5.2.IMPLEMENT CLASS
     form = TokeAmount()
-    if form.validate_on_submit():
-        print("we have you")
-
-        redirect(url_for('login'))
     
+
+    if form.validate_on_submit():
+        user_balance = data["balance"]
+        user_balance_typed =form.amount.data
+        print(user_balance,user_balance_typed)
+
+        if user_balance_typed>user_balance:
+             flash('You dont have that much tokens in your walet')
+
+        else :
+            flash("do you want to send this amout?") 
+            return render_template('profile.html',data=data,form=form)
+    else:
+        print("we don't have this")
+  
     return render_template('send.html',data=data, form=form)
 
 #LAST PART
