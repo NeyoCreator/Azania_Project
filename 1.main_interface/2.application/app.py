@@ -1,6 +1,7 @@
 #0.IMPORT LIBRARIES
 from email import message
 from locale import currency
+from cv2 import subtract
 from django.forms import IntegerField
 from flask import Flask, render_template,redirect,url_for,flash
 from flask_bootstrap import Bootstrap
@@ -57,32 +58,34 @@ class UserDetailForm(FlaskForm):
 
 class TokeAmount(FlaskForm):
     amount = IntegerField('ZA')
+    username = StringField('username',validators= [InputRequired(), Length(min=4, max=15 )])
+
 
 #4.CUSTOM FUNCTIONS
-
 #4.1 FIND CURRENT USER
 def find_current_user():
     #4.1.1WRITE TO THE JSON FILE
+    positional_value = 0
     with open('databases/user_details.json') as f:
         initial_data = json.load(f)
     data_user = {"id":current_user.id,"username":current_user.username,"balance":100}
     isThere=False
 
     #4.1.2.CHECK IF USER EXIST IN FILE
-    for x,y in enumerate(initial_data):
-        if current_user.id==initial_data[x]["id"]:
-            isThere=True
-            initial_data= initial_data[x]
+    if data_user in initial_data:
+        #USER EXIST, FIND POSITION
+        isThere=True
+        
+        positional_value = initial_data.index(data_user)
+        initial_data= initial_data[positional_value]
+    else:
+        print("user does not exist")
 
     if isThere :
-        print("You already exist.")
-        print(initial_data)
         data=initial_data
          #CLACULATE THE CURRENCY
         currency = data["balance"]*16   
     else:
-        print("We will create your profile")
-        print(data_user)
         data=data_user
         initial_data.append(data_user)
         with open('databases/user_details.json', 'w') as fp:
@@ -100,7 +103,7 @@ def find_current_user():
         with open('databases/bank.json', 'w') as fp:
             json.dump(current_balance_list, fp)
     
-    return data, currency
+    return data, currency, positional_value
 
 #5.ROUTING
 @app.route('/')
@@ -140,14 +143,14 @@ def login():
 @login_required
 def profile():
     #5.3.1.IMPLEMENT CUSTOM FUNCTION
-    data, currency = find_current_user()
+    data, currency,x = find_current_user()
     return render_template('profile.html',data=data,currency=currency)
 
 #5.4.SEND TOKENS
 @app.route('/receive')
 def receive():
     #5.4.1.IMPLEMENT CUSTOM FUNCTION
-    data, currency = find_current_user()
+    data, currency, positional_value = find_current_user()
 
     #5.4.2.CREATE QR CODE FROM DATA
     username = data["username"]
@@ -163,24 +166,63 @@ def receive():
 @app.route('/send',methods=['GET','POST'])
 def send():
     #5.5.1.IMPLEMENT CUSTOM FUNCTION
-    data, currency = find_current_user()
-     
+    data, currency, positional_value = find_current_user()
 
     #5.5.2.IMPLEMENT CLASS
     form = TokeAmount()
-    
-
     if form.validate_on_submit():
         user_balance = data["balance"]
         user_balance_typed =form.amount.data
-        print(user_balance,user_balance_typed)
+        receiver = form.username.data
+        receiver_data = "User does not exist"
+         
 
         if user_balance_typed>user_balance:
              flash('You dont have that much tokens in your walet')
 
         else :
-            flash("do you want to send this amout?") 
-            return render_template('profile.html',data=data,form=form)
+            #RECORD TRANSACTIONS
+            with open('databases/user_details.json') as f:
+                initial_data = json.load(f)
+            isThere=False
+
+            for x,y in enumerate(initial_data):
+                if receiver==initial_data[x]["username"]:
+                    y=initial_data[x]
+                    isThere=True
+                    position_value=x
+                    receiver_data = y
+            
+            if isThere :
+
+                #SUBTRACT AMOUNT FROM OWNER
+                user_data, _,owner_position = find_current_user()
+                subtracted_balance = user_data["balance"]-user_balance_typed
+                user_data.update({"balance":subtracted_balance})
+                initial_data[owner_position] = user_data
+                
+                #ADD AMOUNT TO RECEIVER
+                added_balance = receiver_data["balance"]+user_balance_typed
+                reciever_id = receiver_data["id"]
+                receiver_data.update({"id":reciever_id,"username":receiver,"balance":added_balance})
+                #initial_data[x] = receiver_data
+                
+
+                #EDIT JSON FILE
+                # with open('databases/user_details.json', 'w') as fp:
+                #     json.dump(initial_data, fp)
+
+
+                flash(f"{user_balance_typed} ZA has been sent to {receiver}")
+                
+  
+            else:
+                
+                print("data_user")
+                
+
+
+            #return render_template('profile.html',data=data,form=form)
     else:
         print("we don't have this")
   
