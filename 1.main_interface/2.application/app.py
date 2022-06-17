@@ -72,14 +72,35 @@ def find_current_user():
     isThere=False
 
     #4.1.2.CHECK IF USER EXIST IN FILE
-    if data_user in initial_data:
-        #USER EXIST, FIND POSITION
-        isThere=True
+    # if data_user in initial_data:
+    #     #USER EXIST, FIND POSITION
+    #     isThere=True
         
-        positional_value = initial_data.index(data_user)
-        initial_data= initial_data[positional_value]
-    else:
-        print("user does not exist")
+    #     positional_value = initial_data.index(data_user)
+    #     initial_data= initial_data[positional_value]
+    # else:
+    #     print("user does not exist")
+
+    # for x,y in enumerate(initial_data):
+    #     print(initial_data[x]["id"])
+    #     if data_user["id"]==initial_data[x]["id"]:
+    #         # y=initial_data[x]
+    #         # isThere=True
+    #         # position_value=x
+    #         # receiver_data = y
+    #         isThere=True
+    #         positional_value = x
+    #         initial_data= initial_data[x]
+
+    for x,y in enumerate(initial_data):
+        if data_user["id"]==initial_data[x]:
+            isThere = True
+            print(initial_data[x]["username"])
+            positional_value = x
+            initial_data= initial_data[x]
+            continue
+        else :
+            print(initial_data[x]["username"])
 
     if isThere :
         data=initial_data
@@ -186,6 +207,15 @@ def send():
                 initial_data = json.load(f)
             isThere=False
 
+            # if receiver_data in initial_data:
+            #     #USER EXIST, FIND POSITION
+            #     isThere=True
+
+            #     positional_value = initial_data.index(receiver_data)
+            #     initial_data= initial_data[positional_value]
+            # else:
+            #     print("user does not exist")
+
             for x,y in enumerate(initial_data):
                 if receiver==initial_data[x]["username"]:
                     y=initial_data[x]
@@ -205,12 +235,13 @@ def send():
                 added_balance = receiver_data["balance"]+user_balance_typed
                 reciever_id = receiver_data["id"]
                 receiver_data.update({"id":reciever_id,"username":receiver,"balance":added_balance})
-                #initial_data[x] = receiver_data
-                
+                initial_data[position_value] = receiver_data
+                print(initial_data)
 
+            
                 #EDIT JSON FILE
-                # with open('databases/user_details.json', 'w') as fp:
-                #     json.dump(initial_data, fp)
+                with open('databases/user_details.json', 'w') as fp:
+                    json.dump(initial_data, fp)
 
 
                 flash(f"{user_balance_typed} ZA has been sent to {receiver}")
