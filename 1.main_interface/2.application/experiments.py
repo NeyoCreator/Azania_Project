@@ -2,10 +2,11 @@ user_list =[{"id": 1, "username": "neo25722", "balance": 80}, {"id": 2, "usernam
 
 user_name = "nqobile"
 
-for x,y in enumerate(user_list):
-     if user_name ==user_list[x]["username"]:
-          print("you exist")
-     else:
-          print("you don't exist")
+
+for index, value in enumerate(user_list):
+     if user_name == value["username"]:
+          print("we have a match")
+     else :
+          print("we have nothing")
 
 
