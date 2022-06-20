@@ -235,8 +235,8 @@ def send():
 #5.6 CAPTURING IMAGE
 @app.route('/capture', methods=['GET','POST'])
 def capture():
-    if request.method == 'POST':
-        return jsonify(request.form['file'])
+    # if request.method == 'POST':
+    #     return jsonify(request.form['file'])
     return render_template('capture.html', title='Upload a New Photo')
 
 #LAST PART
