@@ -1,9 +1,11 @@
 #0.IMPORT LIBRARIES
 from email import message
 from locale import currency
+import requests
+from flask import jsonify,request
 from cv2 import subtract
 from django.forms import IntegerField
-from flask import Flask, render_template,redirect,url_for,flash
+from flask import Flask, render_template,redirect,url_for,flash ,jsonify, Response, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField,BooleanField,IntegerField
@@ -15,6 +17,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import json
 import qrcode
+import random
+# from camera import VideoCamera
 
 #1.DATABASE AND FOLDER CREATION
 file_path = os.path.abspath(os.getcwd())+"\databases\database.db"
@@ -227,6 +231,13 @@ def send():
         print("we don't have this")
   
     return render_template('send.html',data=data, form=form)
+
+#5.6 CAPTURING IMAGE
+@app.route('/capture', methods=['GET','POST'])
+def capture():
+    if request.method == 'POST':
+        return jsonify(request.form['file'])
+    return render_template('capture.html', title='Upload a New Photo')
 
 #LAST PART
 @app.route('/logout')

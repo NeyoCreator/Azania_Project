@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 500px;
+    margin: 10px auto;
+}
+
+#camera {
+    width: 350px;
+    height: 350px;
+    border: 1px solid black;
+    margin-bottom: 20px;
+}
+
+#btn {
+    margin-bottom: 20px;
+}

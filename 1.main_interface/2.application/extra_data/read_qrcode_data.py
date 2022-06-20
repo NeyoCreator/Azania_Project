@@ -15,6 +15,5 @@ while True:
           break
 
 print(a)
-cap.release(a)
 cv2.destroyAllWindows
 

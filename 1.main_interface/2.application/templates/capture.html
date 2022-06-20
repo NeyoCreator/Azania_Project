@@ -1,0 +1,32 @@
+<div class="container">
+
+    <div id="camera"></div>
+    <button id="btn" onclick="take_picture()">Take picture</button>
+
+    <p>Result:</p><br>
+    <div id="results"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+    <script>
+       Webcam.set({
+        width:350,
+        height:300,
+        image_format: 'jpeg',
+        jpeg_quality: 90
+    });
+
+    Webcam.attach('#camera');
+
+    function take_picture() {
+
+        Webcam.snap( function(picture_data) {
+
+            // display results in page
+            document.getElementById('results').innerHTML = 
+            '<img src="'+picture_data+'"/>';
+
+        } );
+    }
+   </script>
+
+</div>
