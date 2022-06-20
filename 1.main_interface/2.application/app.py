@@ -209,8 +209,8 @@ def send():
 
             
                 #EDIT JSON FILE
-                # with open('databases/user_details.json', 'w') as fp:
-                #     json.dump(initial_data, fp)
+                with open('databases/user_details.json', 'w') as fp:
+                    json.dump(initial_data, fp)
 
 
                 flash(f"{user_balance_typed} ZA has been sent to {receiver}")

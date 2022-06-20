@@ -14,13 +14,16 @@ Login
 {% block content %}
     <div class="container">
       <form class="form-signin", method="POST" action="/login">
-        {% with messages = get_flashed_messages() %}
-   {% if messages %}
-      {% for message in messages %}
-         {{ message }}
-      {% endfor %}
-   {% endif %}
-{% endwith %}
+         {% with messages = get_flashed_messages() %}
+         {% if messages %}
+           {% for message in messages %}
+           <div class="alert alert-success alert-dismissable" role="alert">
+             {{message}}
+            </div>
+           {% endfor %}
+         {% endif %}
+       {% endwith %}
+
         {{ form.hidden_tag() }}
         <h3>{{ wtf.form_field(form.username) }}</h3>
         <h3>{{ wtf.form_field(form.password) }} </h3>
