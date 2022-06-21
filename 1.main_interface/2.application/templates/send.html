@@ -35,7 +35,6 @@ Login
 
     <div class="container">
       <form class="form-signin", method="POST" action="send">
-        
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             {% for message in messages %}
@@ -45,14 +44,11 @@ Login
             {% endfor %}
           {% endif %}
         {% endwith %}
-
-        
+    
 <h1 class="lead"><strong>How many tokens do you want to send?</strong></h1>
         {{ form.hidden_tag()}}
         <h3>{{wtf.form_field(form.amount)}}</h3>
-        <h3>{{wtf.form_field(form.username)}}</h3>
-       
-        
+        <h3>{{wtf.form_field(form.username)}}</h3> 
         <button class="wide_blue_button" type="submit"><strong>Send</strong></button>
         <center></form>
         <form action="/profile"><button class="wide_orange_button" type="submit"><strong>close</strong></button></form>
@@ -61,11 +57,6 @@ Login
        <form action="/capture">
         <input type="radio" onClick="this.form.submit();"> <label type ="submit">Scan QR code</label><br>
         </form></center>
-
-      
-
-       
-       
     </div> 
     
 
