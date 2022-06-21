@@ -10,7 +10,6 @@ Login
 <link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
 <link href='https://fonts.googleapis.com/css?family=Antic' rel='stylesheet'>
 {% endblock %}
-
 {% block content %}
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
@@ -50,14 +49,13 @@ Login
     Webcam.attach('#camera');
 
     function take_picture() {
-
         Webcam.snap( function(picture_data) {
-
             // display results in page
             document.getElementById('results').innerHTML = 
             '<img src="'+picture_data+'"/>';
-
         } );
+
+        
     }
    </script>
 

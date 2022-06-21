@@ -98,3 +98,5 @@ MANAGED TO UPLOAD IMAGE, TAKE NOTE THAT THIS IS DONE
 THOUGH JAVA SCRIPT, I NEED TO FIND A WAY 
 TO READ THE DATA AND HAVE A CONFRIMING MECHANISNM
 #CREATE AN UPLOAD SECTION.
+I WILL NEED TO CREATE A NEW APPLICATION
+https://github.com/furas/python-examples/blob/master/flask/web%20camera%20in%20browser%20-%20canvas%20-%20take%20image%20and%20upload%20to%20server/app-3-take-image-and-upload-and-sendback-3-fetch.py
