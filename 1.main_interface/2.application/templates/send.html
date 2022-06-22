@@ -49,14 +49,29 @@ Login
         {{ form.hidden_tag()}}
         <h3>{{wtf.form_field(form.amount)}}</h3>
         <h3>{{wtf.form_field(form.username)}}</h3> 
+        <label>Choose a browser from this list:
+          <input list="browsers" name="myBrowser" /></label>
+          <datalist id="browsers">
+            <option value="Chrome">
+            <option value="Firefox">
+            <option value="Internet Explorer">
+            <option value="Opera">
+            <option value="Safari">
+            <option value="Microsoft Edge">
+          </datalist>
         <button class="wide_blue_button" type="submit"><strong>Send</strong></button>
-        <center></form>
+        <center>
+        </form>
         <form action="/profile"><button class="wide_orange_button" type="submit"><strong>close</strong></button></form>
        </center>
        <center>
        <form action="/capture">
         <input type="radio" onClick="this.form.submit();"> <label type ="submit">Scan QR code</label><br>
         </form></center>
+
+        
+
+        
     </div> 
     
     <!-- /container -->
