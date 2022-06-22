@@ -18,6 +18,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 import json
 import qrcode
 import random
+import wtforms
 # from camera import VideoCamera
 
 #1.DATABASE AND FOLDER CREATION
@@ -34,6 +35,12 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+
+#2.2 SUBTLE
+file= open('databases/user_list.json')
+original_user_list = json.load(file)
+
 
 #3.CLASS CREATION
 class User(UserMixin,db.Model):
@@ -62,9 +69,13 @@ class UserDetailForm(FlaskForm):
 
 class TokeAmount(FlaskForm):
     amount = IntegerField('ZA')
-    username = StringField('username',validators= [InputRequired(), Length(min=4, max=15 )])
+    username = wtforms.SelectField(label='username', choices=original_user_list)
+    x = 7
+    x = x+2
+    print(x)
 
-
+def kaba():
+    print("Kaba")
 #4.CUSTOM FUNCTIONS
 #4.1 FIND CURRENT USER
 def find_current_user():
@@ -115,6 +126,9 @@ def write_user():
 
     for index,value in enumerate(initial_data):
         json_user_list.append(value["username"])
+
+    with open('databases/user_list.json', 'w') as fp:
+            json.dump(json_user_list, fp)
 
     return json_user_list
 
@@ -227,7 +241,7 @@ def send():
                 with open('databases/user_details.json', 'w') as fp:
                     json.dump(initial_data, fp)
 
-                flash(f"{user_balance_typed} ZA has been sent to {receiver}, {user_list_data}")
+                flash(f"{user_balance_typed} ZA has been sent to {receiver}")
                 
   
             else:
