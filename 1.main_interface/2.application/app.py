@@ -107,11 +107,16 @@ def find_current_user():
     
     return data, currency, positional_value
 
-#4.2READ USERLIST
-def read_users():
-    file= open('databases/user_list.json')
-    user_list = json.load(file)
-    return user_list
+#4.2 WRITE USERLIST
+def write_user():
+    with open('databases/user_details.json') as f:
+        initial_data = json.load(f)
+    json_user_list = []
+
+    for index,value in enumerate(initial_data):
+        json_user_list.append(value["username"])
+
+    return json_user_list
 
 #5.ROUTING
 @app.route('/')
@@ -170,17 +175,14 @@ def receive():
 
     return render_template('receive.html',data=data, picture=picture)
 
-@app.route('/shake',methods=['GET','POST'])
-def shake():
-    #5.5.1.IMPLEMENT CUSTOM FUNCTION
-    print("shake")
 
 #5.5.RECEIVE TOKENS
 @app.route('/send',methods=['GET','POST'])
 def send():
     #5.5.1.IMPLEMENT CUSTOM FUNCTION
     data, currency, positional_value = find_current_user()
-    user_list_data = read_users()
+    user_list_data = write_user()
+    user_list_data.remove(current_user.username)
 
     #5.5.2.IMPLEMENT CLASS
     form = TokeAmount()
@@ -232,8 +234,6 @@ def send():
                 
                 print("data_user")
                 
-
-
             #return render_template('profile.html',data=data,form=form)
     else:
         print("we don't have this")
