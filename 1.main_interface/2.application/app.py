@@ -107,6 +107,12 @@ def find_current_user():
     
     return data, currency, positional_value
 
+#4.2READ USERLIST
+def read_users():
+    file= open('databases/user_list.json')
+    user_list = json.load(file)
+    return user_list
+
 #5.ROUTING
 @app.route('/')
 def index():
@@ -164,11 +170,17 @@ def receive():
 
     return render_template('receive.html',data=data, picture=picture)
 
+@app.route('/shake',methods=['GET','POST'])
+def shake():
+    #5.5.1.IMPLEMENT CUSTOM FUNCTION
+    print("shake")
+
 #5.5.RECEIVE TOKENS
 @app.route('/send',methods=['GET','POST'])
 def send():
     #5.5.1.IMPLEMENT CUSTOM FUNCTION
     data, currency, positional_value = find_current_user()
+    user_list_data = read_users()
 
     #5.5.2.IMPLEMENT CLASS
     form = TokeAmount()
@@ -178,7 +190,6 @@ def send():
         receiver = form.username.data
         receiver_data = "User does not exist"
          
-
         if user_balance_typed>user_balance:
              flash('You dont have that much tokens in your walet')
 
@@ -197,7 +208,6 @@ def send():
                     receiver_data = y
             
             if isThere :
-
                 #SUBTRACT AMOUNT FROM OWNER
                 user_data, _,owner_position = find_current_user()
                 subtracted_balance = user_data["balance"]-user_balance_typed
@@ -211,13 +221,11 @@ def send():
                 initial_data[position_value] = receiver_data
                 print(initial_data)
 
-            
                 #EDIT JSON FILE
                 with open('databases/user_details.json', 'w') as fp:
                     json.dump(initial_data, fp)
 
-
-                flash(f"{user_balance_typed} ZA has been sent to {receiver}")
+                flash(f"{user_balance_typed} ZA has been sent to {receiver}, {user_list_data}")
                 
   
             else:
@@ -230,7 +238,7 @@ def send():
     else:
         print("we don't have this")
   
-    return render_template('send.html',data=data, form=form)
+    return render_template('send.html',data=data, form=form,user_list=user_list_data)
 
 #5.6 CAPTURING IMAGE
 @app.route('/capture', methods=['GET','POST'])
