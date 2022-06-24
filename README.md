@@ -8,6 +8,7 @@ the project.
 The aim is to provide an alternative form of payment. Using stable coins as a medium 
 of exchange. The image below provides an illistraded example of how the system would 
 work.
+![alt text for screen readers](/image.png "Text to show on mouseover").
 
 ## __2.Why are we building it?__
 In Africa, with the current banking system it is difficult for merchants to participate
