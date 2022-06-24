@@ -5,7 +5,7 @@ be called Dinar (DN).
 
 ## __1.What are we building?__
 The aim is to provide an alternative form of payment. Using stable coins as a medium 
-of exchange. The image below provides an illistraded example of how the system would 
+of exchange. The image below provides an illustrated example of how the system would 
 work.
 
 ![alt text for screen readers](/image.png "Text to show on mouseover")
@@ -22,4 +22,5 @@ provides a better means of financial communication.
 Through a decentralised platform that enables merchants and customers to send and recieve
 tokens as a form of payment. From a technical standpoint, we are planning to build this 
 on top of the Radix platform. Currently, the code in the repo is based on a central arcitecture,
-this is  just a starting point and will be updated once we get relevant people. 
+using flask framework.this is  just a starting point for prototyping reason and will be plan to 
+update as we progress. 
