@@ -1,14 +1,13 @@
 # Azanai
-Azania is a platform that provides digital tokens
-as a medium of exchage. It uses tokens called Dinar.
-Through this readme we will cover 3 questions regading
-the project.
+Through this readme, we will cover three questions regarding project.Azania is a 
+platform that provides a digital token as a medium of exchange. the token will 
+be called Dinar (DN).
 
 ## __1.What are we building?__
 The aim is to provide an alternative form of payment. Using stable coins as a medium 
 of exchange. The image below provides an illistraded example of how the system would 
 work.
-![alt text for screen readers](/image.png "Text to show on mouseover").
+![alt text for screen readers](/image.png "Text to show on mouseover")
 
 ## __2.Why are we building it?__
 In Africa, with the current banking system it is difficult for merchants to participate
