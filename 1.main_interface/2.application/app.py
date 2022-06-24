@@ -241,7 +241,7 @@ def send():
                 with open('databases/user_details.json', 'w') as fp:
                     json.dump(initial_data, fp)
 
-                flash(f"{user_balance_typed} ZA has been sent to {receiver}")
+                flash(f"{user_balance_typed} ZA tokens has been sent to {receiver}")
                 
   
             else:
