@@ -1,5 +1,5 @@
 # Azanai
-Through this readme, we will cover three questions regarding project.Azania is a 
+Through this readme, we will cover three questions regarding the project. Azania is a 
 platform that provides a digital token as a medium of exchange. the token will 
 be called Dinar (DN).
 
