@@ -1,7 +1,7 @@
 use scrypto::prelude::*;
 
 blueprint! {
-    struct TokeMachine {
+    struct TokenMachine {
         // Vault to store the remaining dinars
         dinar_vault: Vault,
         // Vault to store the XRD payments
@@ -10,7 +10,7 @@ blueprint! {
         price: Decimal
     }
 
-    impl TokeMachine {
+    impl TokenMachine {
         pub fn instantiate_machine(price: Decimal) -> ComponentAddress {
             // Create a new dinar resource
             let dinar_vault: Bucket = ResourceBuilder::new_fungible()
@@ -18,7 +18,6 @@ blueprint! {
                 .metadata("name", "Dinars")
                 .metadata("symbol", "DNH")
                 .initial_supply(500);
-
             // Instantiate a new component and return it
             Self {
                 dinar_vault: Vault::with_bucket(dinar_vault),
