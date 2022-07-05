@@ -2,62 +2,56 @@ use scrypto::prelude::*;
 
 blueprint! {
     struct TokenMachine {
-        dinar_vault: Vault,
-        collected_xrd: Vault,
-        price: Decimal
+        //0.DEFINE RESOURCE
+        user_vault: Vault,
+        price:Decimal
     }
 
-    impl TokenMachine {
-        // We are returning a bucket containing the admin badge along with the
-        pub fn instantiate_machine(price: Decimal) -> (ComponentAddress, Bucket) {
-            // CREATE ADMIN BADGE
-            let admin_badge: Bucket = ResourceBuilder:: new_fungible()
-                .divisibility(DIVISIBILITY_NONE)
-                .metadata("name", "Token Machine Admin ")
-                .initial_supply(1);
-            
-            // Create a new dinar resource
-            let dinar_vault: Bucket = ResourceBuilder::new_fungible()
+    impl TokenMachine{
+
+        //1.CREATE FUNCTION 
+        pub fn instantiate_machine (price: Decimal) -> (ComponentAddress,Bucket){
+            //1.1.DINAR RESOURCE
+            let user_vault: Bucket = ResourceBuilder::new_fungible()
                 .divisibility(DIVISIBILITY_NONE)
                 .metadata("name", "Dinars")
-                .metadata("symbol", "DNH")
-                .initial_supply(500);
+                .metadata("symbol", "DNR")
+                .initial_supply(100);
 
-            // AUTHENTICATION
-            let access_rule = AccessRules::new()
-                .method("withdraw_xrd",rule!(require(admin_badge.resource_address())))
-                .default(rule!(allow_all));
+            //1.2.ADMIN BADGE
+            let admin_badge = ResourceBuilder::new_fungible()
+                .divisibility(DIVISIBILITY_NONE)
+                .metadata("name", "AdminBadge")
+                .initial_supply(1);
 
-            // INSTATIATE COMPONENT 
-            let component = Self{
-                dinar_vault: Vault::with_bucket(dinar_vault),
-                collected_xrd: Vault::new(RADIX_TOKEN),
+            //1.3.AUTHENTICATE
+            // let access_rule = AccessRules::new()
+            //     .method("withdraw",rule!(require(admin_badge.resource_address())))
+            //     .default(rule!(allow_all));
+
+            //1.4 INSTANTIATE COMPONENT
+            let componet = Self{
+                user_vault: Vault ::with_bucket(user_vault),
                 price:price
-
             }
-            .instantiate()
-            .add_access_check(access_rule);
+            .instantiate();
+            // .add_access_check(access_rule);
 
-            // RETURN COMPONENT AND BADGE
-            (component.globalize(), admin_badge)
-
+            //1.5.RETURN COMPONENT AND BADE
+            (componet.globalize(),admin_badge)
         }
 
-        // Allow users to buy a dinar by providing enough XRD.
-        // Returns a single dinar and the remaining of the payment bucket (the change)
-        pub fn buy_dinar(&mut self, mut payment: Bucket) -> (Bucket, Bucket) {
-            let our_share = payment.take(self.price);
-            self.collected_xrd.put(our_share);
 
-            let dinar: Bucket = self.dinar_vault.take(1);
-            (dinar, payment)
-            
+        //WITHDRAW 
+        pub fn withdraw(&mut self) -> Bucket {
+            info!("Withdrawing");
+            self.user_vault.take(2)
         }
 
-        pub fn withdraw_xrd(&mut self) -> Bucket {
-            // Simply take all resources from the collected_xrd vault and
-            // return them
-            self.collected_xrd.take_all()
+        //2.CHECK BALANCE
+        pub fn check_balance(&mut self) -> Bucket{
+            info!("My balance is: {}", self.user_vault.amount());
+            self.user_vault.take(0)
         }
 
 

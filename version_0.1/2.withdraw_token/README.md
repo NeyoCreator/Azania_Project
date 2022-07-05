@@ -1,3 +1,7 @@
 # Token Machine
-In this stage we will focus on how an authorised user 
-can withdraw xrd tokens to purchase dinar tokens
+The functionality of this program is 
+to make sure that the user can withdraw 
+tokens from their wallet. Our main focus 
+wil be to making sure that the correct 
+user is able to withdraw, we wil be 
+implementing the use of badges.
