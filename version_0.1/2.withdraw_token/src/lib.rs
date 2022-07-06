@@ -42,12 +42,9 @@ blueprint! {
  
         //3. WITHDRAW METHODS
         pub fn withdraw_dinar(&mut self) -> Bucket {
-            // Simply take all resources from the collected_xrd vault and
-            // return them
+
             self.dinar_vault.take(1)
         }
-
-
 
         
     }
