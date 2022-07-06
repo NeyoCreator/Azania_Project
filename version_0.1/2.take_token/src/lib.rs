@@ -42,7 +42,6 @@ blueprint! {
  
         //3. WITHDRAW METHODS
         pub fn withdraw_dinar(&mut self) -> Bucket {
-
             self.dinar_vault.take(1)
         }
 
